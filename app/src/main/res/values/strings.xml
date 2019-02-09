@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MyLog</string>
     <string name="action_settings">Settings</string>
+    <string name="write_new_log">新しいログを入力して下さい</string>
+    <string name="add_button">ログを追加</string>
+    <string name="back_button">前に戻る</string>
 </resources>

@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /*
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -44,6 +45,7 @@ class MainActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+    */
 
     override fun onResume() {
         super.onResume()
@@ -56,10 +58,6 @@ class MainActivity : AppCompatActivity() {
 
         // 表示形式の変更
         val log_list = ArrayList<String>()
-        //val length = results.size
-        //for (i in 0..length - 1){
-        //    log_list.add(results[i]!!.strLog)
-        //}
 
         results.asReversed().forEach {
             log_list.add(it.strLog)
