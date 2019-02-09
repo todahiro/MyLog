@@ -15,6 +15,10 @@ class AddLogActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_log)
 
+        addButton.setOnClickListener {
+            addLog()
+        }
+
         backButton.setOnClickListener {
             finish()
         }
@@ -43,6 +47,6 @@ class AddLogActivity : AppCompatActivity() {
         addTextLog.setText("")
 
         // 登録完了メッセージを表示(トースト)
-        Toast.makeText(this@AddLogActivity, "新しいログを追加しました", Toast.LENGTH_SHORT)
+        Toast.makeText(this@AddLogActivity, "新しいログを追加しました", Toast.LENGTH_SHORT).show()
     }
 }

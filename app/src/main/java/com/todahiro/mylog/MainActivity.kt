@@ -6,10 +6,16 @@ import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ArrayAdapter
+import io.realm.Realm
+import io.realm.RealmResults
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var realm: Realm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +45,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // 新しいログ追加ボタン
+    override fun onResume() {
+        super.onResume()
 
+        // Realmインスタンスの取得
+        realm = Realm.getDefaultInstance()
+
+        // DBに登録しているログを一覧表示
+        val results: RealmResults<LogDB> = realm.where(LogDB::class.java).findAll()
+
+        // 表示形式の変更
+        val log_list = ArrayList<String>()
+        //val length = results.size
+        //for (i in 0..length - 1){
+        //    log_list.add(results[i]!!.strLog)
+        //}
+
+        results.asReversed().forEach {
+            log_list.add(it.strLog)
+        }
+
+        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, log_list)
+        listView.adapter = adapter
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        realm.close()
+    }
 }
