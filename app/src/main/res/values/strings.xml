@@ -4,4 +4,6 @@
     <string name="write_new_log">新しいログを入力して下さい</string>
     <string name="add_button">ログを追加</string>
     <string name="back_button">前に戻る</string>
+    <string name="search_hint">検索するログを入力して下さい</string>
+    <string name="search">Search</string>
 </resources>
