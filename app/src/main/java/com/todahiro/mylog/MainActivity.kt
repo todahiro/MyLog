@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView
+import android.util.Log
 
 import android.view.Menu
 import android.view.MenuItem
@@ -26,27 +27,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
-
-
-        fab.setOnClickListener { //view ->
+        fab.setOnClickListener {
             val intent = Intent(this@MainActivity, AddLogActivity::class.java)
-            //intent.putExtra(getString(R.string.intent_key_status), getString(R.string.))
             startActivity(intent)
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // 1
         val inflater = menuInflater
         inflater.inflate(R.menu.menu_search, menu)
-        // 2
+
         val searchMenuItem = menu.findItem(R.id.search_item)
         val searchView = searchMenuItem.actionView as SearchView
-        // 3
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        // 4
-        searchView.setSearchableInfo(
-            searchManager.getSearchableInfo(componentName))
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+
         return true
     }
 
