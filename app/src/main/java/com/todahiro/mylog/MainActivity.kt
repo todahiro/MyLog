@@ -39,10 +39,26 @@ class MainActivity : AppCompatActivity() {
 
         val searchMenuItem = menu.findItem(R.id.search_item)
         val searchView = searchMenuItem.actionView as SearchView
-        val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        // val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        // searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextChange(p0: String?): Boolean {
+                Log.e("test", "onQueryTextChange(): $p0")
+                p0?.let {
+                    onQuery(it)
+                }
+                return false
+            }
 
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                Log.e("test", "onQueryTextSubmit(): $p0")
+                p0?.let {
+                    onQuery(it)
+                }
+                return true
+            }
+        })
         return true
     }
 
@@ -55,6 +71,28 @@ class MainActivity : AppCompatActivity() {
         // DBに登録しているログを一覧表示
         val results: RealmResults<LogDB> = realm.where(LogDB::class.java).findAll()
 
+        setResult(results)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        realm.close()
+    }
+
+
+    private fun onQuery(value: String) {
+        // ユーザー入力検索を行う
+        val result = realm.where(LogDB::class.java).contains("strLog", value).findAll()
+
+
+        result.forEach {
+            Log.e("test", "result: ${it.strLog}")
+        }
+        setResult(result)
+    }
+
+    private fun setResult(results: RealmResults<LogDB>) {
         // 表示形式の変更
         val log_list = ArrayList<String>()
 
@@ -66,9 +104,4 @@ class MainActivity : AppCompatActivity() {
         listView.adapter = adapter
     }
 
-    override fun onPause() {
-        super.onPause()
-
-        realm.close()
-    }
 }
