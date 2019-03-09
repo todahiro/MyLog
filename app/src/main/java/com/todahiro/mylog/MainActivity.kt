@@ -6,6 +6,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.util.Log
 
@@ -21,6 +23,7 @@ import kotlinx.android.synthetic.main.content_main.*
 class MainActivity : AppCompatActivity() {
 
     lateinit var realm: Realm
+    lateinit var listsRecyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +34,8 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, AddLogActivity::class.java)
             startActivity(intent)
         }
+        listsRecyclerView = log_recyclerview
+        listsRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -69,9 +74,10 @@ class MainActivity : AppCompatActivity() {
         realm = Realm.getDefaultInstance()
 
         // DBに登録しているログを一覧表示
-        val results: RealmResults<LogDB> = realm.where(LogDB::class.java).findAll()
+        var results: RealmResults<LogDB> = realm.where(LogDB::class.java).findAll()
 
         setResult(results)
+        //log_recyclerview.adapter = LogRecyclerViewAdapter(results)
     }
 
     override fun onPause() {
@@ -84,7 +90,6 @@ class MainActivity : AppCompatActivity() {
     private fun onQuery(value: String) {
         // ユーザー入力検索を行う
         val result = realm.where(LogDB::class.java).contains("strLog", value).findAll()
-
 
         result.forEach {
             Log.e("test", "result: ${it.strLog}")
@@ -100,8 +105,9 @@ class MainActivity : AppCompatActivity() {
             log_list.add(it.strLog)
         }
 
-        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, log_list)
-        listView.adapter = adapter
-    }
+        listsRecyclerView.adapter = LogRecyclerViewAdapter(results)
+        //val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, log_list)
+        //log_recyclerview.adapter = adapter
+}
 
 }
