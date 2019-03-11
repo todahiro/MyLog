@@ -10,8 +10,9 @@
         tools:context=".MainActivity">
     <android.support.v7.widget.RecyclerView
             android:layout_width="395dp"
-            android:layout_height="587dp"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" android:id="@+id/log_recyclerview"/>
+            android:id="@+id/log_recyclerview"
+            app:layout_constraintTop_toTopOf="parent"/>
 </android.support.constraint.ConstraintLayout>

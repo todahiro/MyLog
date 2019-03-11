@@ -17,6 +17,7 @@ class LogRecyclerViewAdapter(private val mValues: RealmResults<LogDB>) : Recycle
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.textViewLogs.text = mValues[position]!!.strLog
+        holder.textViewDate.text = mValues[position]!!.dateLog.toString()
     }
 
     override fun getItemCount(): Int {
@@ -25,9 +26,11 @@ class LogRecyclerViewAdapter(private val mValues: RealmResults<LogDB>) : Recycle
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val textViewLogs : TextView
+        val textViewDate : TextView
 
         init {
             textViewLogs = mView.findViewById<View>(R.id.log_textview) as TextView
+            textViewDate = mView.findViewById<View>(R.id.date_textview) as TextView
         }
     }
 }

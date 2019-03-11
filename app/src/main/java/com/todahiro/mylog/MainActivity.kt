@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var realm: Realm
     lateinit var listsRecyclerView: RecyclerView
+    lateinit var results: RealmResults<LogDB>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,7 +72,8 @@ class MainActivity : AppCompatActivity() {
         realm = Realm.getDefaultInstance()
 
         // DBに登録しているログを一覧表示
-        var results: RealmResults<LogDB> = realm.where(LogDB::class.java).sort("dateLog", Sort.DESCENDING).findAll()
+        // var results: RealmResults<LogDB> = realm.where(LogDB::class.java).sort("dateLog", Sort.DESCENDING).findAll()
+        results = realm.where(LogDB::class.java).sort("dateLog", Sort.DESCENDING).findAll()
 
         listsRecyclerView = log_recyclerview
         listsRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -87,17 +89,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun onQuery(value: String) {
         // ユーザー入力検索を行う
-        val searcn_results = realm.where(LogDB::class.java).contains("strLog", value).findAll()
+        results = realm.where(LogDB::class.java)
+            .contains("strLog", value)
+            .sort("dateLog", Sort.DESCENDING)
+            .findAll()
 
-        searcn_results.forEach {
+        results.forEach {
             Log.e("test", "result: ${it.strLog}")
         }
 
-        listsRecyclerView = log_recyclerview
-        listsRecyclerView.layoutManager = LinearLayoutManager(this)
-        listsRecyclerView.adapter = LogRecyclerViewAdapter(searcn_results)
+        listsRecyclerView.adapter = LogRecyclerViewAdapter(results)
     }
 
+    /*
     private fun setResult(results: RealmResults<LogDB>) {
         // 表示形式の変更
         val log_list = ArrayList<String>()
@@ -108,4 +112,5 @@ class MainActivity : AppCompatActivity() {
 
         listsRecyclerView.adapter = LogRecyclerViewAdapter(results)
     }
+    */
 }
