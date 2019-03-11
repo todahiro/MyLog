@@ -6,6 +6,7 @@ import android.widget.Toast
 import io.realm.Realm
 import io.realm.kotlin.createObject
 import kotlinx.android.synthetic.main.activity_add_log.*
+import java.util.*
 
 class AddLogActivity : AppCompatActivity() {
 
@@ -40,6 +41,7 @@ class AddLogActivity : AppCompatActivity() {
     private fun addLog() {
         realm.beginTransaction()
         val logDB = realm.createObject(LogDB::class.java)
+        logDB.dateLog = Date()
         logDB.strLog = addTextLog.text.toString()
         realm.commitTransaction()
 

@@ -16,7 +16,6 @@ class LogRecyclerViewAdapter(private val mValues: RealmResults<LogDB>) : Recycle
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.mItem = mValues[position]
         holder.textViewLogs.text = mValues[position]!!.strLog
     }
 
@@ -26,8 +25,6 @@ class LogRecyclerViewAdapter(private val mValues: RealmResults<LogDB>) : Recycle
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val textViewLogs : TextView
-
-        var mItem: LogDB? = null
 
         init {
             textViewLogs = mView.findViewById<View>(R.id.log_textview) as TextView

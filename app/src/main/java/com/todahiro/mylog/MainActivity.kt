@@ -16,6 +16,7 @@ import android.view.MenuItem
 import android.widget.ArrayAdapter
 import io.realm.Realm
 import io.realm.RealmResults
+import io.realm.Sort
 
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
@@ -34,8 +35,6 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this@MainActivity, AddLogActivity::class.java)
             startActivity(intent)
         }
-        listsRecyclerView = log_recyclerview
-        listsRecyclerView.layoutManager = LinearLayoutManager(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -44,8 +43,6 @@ class MainActivity : AppCompatActivity() {
 
         val searchMenuItem = menu.findItem(R.id.search_item)
         val searchView = searchMenuItem.actionView as SearchView
-        // val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        // searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
 
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextChange(p0: String?): Boolean {
@@ -74,10 +71,11 @@ class MainActivity : AppCompatActivity() {
         realm = Realm.getDefaultInstance()
 
         // DBに登録しているログを一覧表示
-        var results: RealmResults<LogDB> = realm.where(LogDB::class.java).findAll()
+        var results: RealmResults<LogDB> = realm.where(LogDB::class.java).sort("dateLog", Sort.DESCENDING).findAll()
 
-        setResult(results)
-        //log_recyclerview.adapter = LogRecyclerViewAdapter(results)
+        listsRecyclerView = log_recyclerview
+        listsRecyclerView.layoutManager = LinearLayoutManager(this)
+        listsRecyclerView.adapter = LogRecyclerViewAdapter(results)
     }
 
     override fun onPause() {
@@ -89,12 +87,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun onQuery(value: String) {
         // ユーザー入力検索を行う
-        val result = realm.where(LogDB::class.java).contains("strLog", value).findAll()
+        val searcn_results = realm.where(LogDB::class.java).contains("strLog", value).findAll()
 
-        result.forEach {
+        searcn_results.forEach {
             Log.e("test", "result: ${it.strLog}")
         }
-        setResult(result)
+
+        listsRecyclerView = log_recyclerview
+        listsRecyclerView.layoutManager = LinearLayoutManager(this)
+        listsRecyclerView.adapter = LogRecyclerViewAdapter(searcn_results)
     }
 
     private fun setResult(results: RealmResults<LogDB>) {
@@ -106,8 +107,5 @@ class MainActivity : AppCompatActivity() {
         }
 
         listsRecyclerView.adapter = LogRecyclerViewAdapter(results)
-        //val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, log_list)
-        //log_recyclerview.adapter = adapter
-}
-
+    }
 }
