@@ -100,17 +100,4 @@ class MainActivity : AppCompatActivity() {
 
         listsRecyclerView.adapter = LogRecyclerViewAdapter(results)
     }
-
-    /*
-    private fun setResult(results: RealmResults<LogDB>) {
-        // 表示形式の変更
-        val log_list = ArrayList<String>()
-
-        results.asReversed().forEach {
-            log_list.add(it.strLog)
-        }
-
-        listsRecyclerView.adapter = LogRecyclerViewAdapter(results)
-    }
-    */
 }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import io.realm.RealmResults
+import java.text.SimpleDateFormat
 
 class LogRecyclerViewAdapter(private val mValues: RealmResults<LogDB>) : RecyclerView.Adapter<LogRecyclerViewAdapter.ViewHolder>() {
 
@@ -17,7 +18,10 @@ class LogRecyclerViewAdapter(private val mValues: RealmResults<LogDB>) : Recycle
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.textViewLogs.text = mValues[position]!!.strLog
-        holder.textViewDate.text = mValues[position]!!.dateLog.toString()
+
+        val df = SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss")
+        holder.textViewDate.text = df.format(mValues[position]!!.dateLog)
+        // holder.textViewDate.text = mValues[position]!!.dateLog.toString()
     }
 
     override fun getItemCount(): Int {
