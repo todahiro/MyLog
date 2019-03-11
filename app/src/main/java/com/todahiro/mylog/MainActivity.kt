@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
@@ -78,6 +79,10 @@ class MainActivity : AppCompatActivity() {
         listsRecyclerView = log_recyclerview
         listsRecyclerView.layoutManager = LinearLayoutManager(this)
         listsRecyclerView.adapter = LogRecyclerViewAdapter(results)
+
+        // RecyclerViewに区切りを入れる
+        val itemDecoration = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        listsRecyclerView.addItemDecoration(itemDecoration)
     }
 
     override fun onPause() {
